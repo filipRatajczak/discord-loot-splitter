@@ -14,7 +14,7 @@ var s *discordgo.Session
 
 func init() {
 	var err error
-	s, err = discordgo.New("Bot " + os.Getenv("TOKEN"))
+	s, err = discordgo.New("Bot " + os.Getenv("DISCORD_BOT_TOKEN"))
 	if err != nil {
 		log.Fatalf("Invalid bot parameters: %v", err)
 	}
@@ -40,6 +40,8 @@ func init() {
 }
 
 func main() {
+	fmt.Println(os.Getenv("DISCORD_BOT_TOKEN"))
+
 	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
 		log.Printf("Logged in as: %v#%v", s.State.User.Username, s.State.User.Discriminator)
 	})
@@ -70,7 +72,12 @@ func main() {
 	//
 	//repository.FindAll()
 
-	defer s.Close()
+	defer func(s *discordgo.Session) {
+		err := s.Close()
+		if err != nil {
+			fmt.Printf("something bad happened: %v\n", err)
+		}
+	}(s)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt)

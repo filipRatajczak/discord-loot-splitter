@@ -1,7 +1,6 @@
 package splitter
 
 import (
-	"fmt"
 	"loot-summary/model"
 	"math"
 )
@@ -11,38 +10,29 @@ type Transfer struct {
 	To   string
 }
 
-func SplitLoot(session []model.Session) string {
-
-	var allSessions []Transfer
-
+func AggregateTransfers(session []model.Session) map[Transfer]int {
+	allSessions := make(map[Transfer]int)
 	for _, a := range session {
-
-		oneSession := Split(&a)
-
+		oneSession := CreateTransfersFromSession(&a)
 		for k, v := range oneSession {
-
-			val, ok := allSessions["foo"]
-			if ok {
-				fmt.Println("bob lives in", val)
+			if _, ok := allSessions[k]; ok {
+				allSessions[k] += v
 			} else {
-				fmt.Println("bob is not in the map")
+				allSessions[k] = v
 			}
-
-			allSessions = append(allSessions, oneSession...)
-
 		}
 
 	}
-	return ""
+	return allSessions
 }
 
-func Split(session *model.Session) map[Transfer]int {
+func CreateTransfersFromSession(session *model.Session) map[Transfer]int {
 
 	balancePerPlayer := session.Balance / len(session.Players)
 
 	m := make([]model.Player, len(session.Players))
 
-	var transfers map[Transfer]int
+	transfers := make(map[Transfer]int)
 
 	for i, player := range session.Players {
 		profit := balancePerPlayer + player.Balance*(-1)
