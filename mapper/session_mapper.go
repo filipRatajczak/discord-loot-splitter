@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"fmt"
-	"loot-summary/model"
+	"loot-summary/db/model"
 	"math"
 	"regexp"
 	"strconv"

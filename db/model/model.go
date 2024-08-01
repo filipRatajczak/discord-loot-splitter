@@ -2,8 +2,13 @@ package model
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
+type SessionEntry struct {
+	ID       *primitive.ObjectID `bson:"_id,omitempty"`
+	Username string
+	Session  Session
+}
+
 type Session struct {
-	ID        *primitive.ObjectID `bson:"_id,omitempty"`
 	Date      string
 	StartTime string
 	EndTime   string
@@ -23,6 +28,7 @@ type Player struct {
 	Damage   int
 	Healing  int
 }
+
 type Summary struct {
 	Message []string
 }

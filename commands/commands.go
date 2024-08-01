@@ -19,7 +19,7 @@ var Commands = []*discordgo.ApplicationCommand{
 	},
 	{
 		Name:        "split-it",
-		Description: "asdfasdf",
+		Description: "Splits all sessions",
 		Type:        discordgo.ChatApplicationCommand,
 	},
 }
