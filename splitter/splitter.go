@@ -1,7 +1,7 @@
 package splitter
 
 import (
-	"loot-summary/model"
+	"loot-summary/db/model"
 	"math"
 )
 
@@ -10,7 +10,7 @@ type Transfer struct {
 	To   string
 }
 
-func AggregateTransfers(session []model.Session) map[Transfer]int {
+func AggregateTransfers(session []model.SessionEntry) map[Transfer]int {
 	allSessions := make(map[Transfer]int)
 	for _, a := range session {
 		oneSession := CreateTransfersFromSession(&a)
@@ -26,15 +26,15 @@ func AggregateTransfers(session []model.Session) map[Transfer]int {
 	return allSessions
 }
 
-func CreateTransfersFromSession(session *model.Session) map[Transfer]int {
+func CreateTransfersFromSession(session *model.SessionEntry) map[Transfer]int {
 
-	balancePerPlayer := session.Balance / len(session.Players)
+	balancePerPlayer := session.Session.Balance / len(session.Session.Players)
 
-	m := make([]model.Player, len(session.Players))
+	m := make([]model.Player, len(session.Session.Players))
 
 	transfers := make(map[Transfer]int)
 
-	for i, player := range session.Players {
+	for i, player := range session.Session.Players {
 		profit := balancePerPlayer + player.Balance*(-1)
 		m[i] = model.Player{
 			Name:    player.Name,

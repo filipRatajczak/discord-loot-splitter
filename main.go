@@ -27,7 +27,7 @@ var (
 
 	commandHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
 		"split-it":   repo.HandleSplitIt,
-		"index-hunt": repo.HandleRegisterHuntSession,
+		"index-hunt": repo.HandleIndexSessionEntry,
 	}
 )
 
@@ -40,8 +40,6 @@ func init() {
 }
 
 func main() {
-	fmt.Println(os.Getenv("DISCORD_BOT_TOKEN"))
-
 	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
 		log.Printf("Logged in as: %v#%v", s.State.User.Username, s.State.User.Discriminator)
 	})
