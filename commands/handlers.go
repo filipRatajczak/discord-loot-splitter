@@ -41,7 +41,7 @@ func (r *Repository) HandleIndexSessionEntry(s *discordgo.Session, i *discordgo.
 
 }
 
-func (r *Repository) HandleSplitIt(s *discordgo.Session, i *discordgo.InteractionCreate) {
+func (r *Repository) HandleSplit(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	repo := &db.Repository{Collection: r.Collection}
 	res := repo.FindAllByUsername(i.Member.User.Username)
@@ -55,6 +55,6 @@ func (r *Repository) HandleSplitIt(s *discordgo.Session, i *discordgo.Interactio
 		},
 	})
 	if err != nil {
-		fmt.Println("Error", err)
+		_ = fmt.Errorf("error", err)
 	}
 }

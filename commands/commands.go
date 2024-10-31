@@ -11,15 +11,61 @@ var Commands = []*discordgo.ApplicationCommand{
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionString,
-				Name:        "string-option",
-				Description: "String option",
+				Name:        "session",
+				Description: "Session from Party Hunt Analyzer",
 				Required:    true,
 			},
 		},
 	},
+	//{
+	//	Name:        "register-team",
+	//	Description: "Register a team",
+	//	Type:        discordgo.ChatApplicationCommand,
+	//	Options: []*discordgo.ApplicationCommandOption{
+	//		{
+	//			Type:        discordgo.ApplicationCommandOptionString,
+	//			Name:        "session",
+	//			Description: "Session from Party Hunt Analyzer",
+	//			Required:    true,
+	//		},
+	//	},
+	//},
+	//{
+	//	Name:        "register-team",
+	//	Description: "Register a team",
+	//	Type:        discordgo.ChatApplicationCommand,
+	//	Options: []*discordgo.ApplicationCommandOption{
+	//		{
+	//			Type:        discordgo.ApplicationCommandOptionString,
+	//			Name:        "session",
+	//			Description: "Session from Party Hunt Analyzer",
+	//			Required:    true,
+	//		},
+	//	},
+	//},
 	{
 		Name:        "split-it",
 		Description: "Splits all sessions",
 		Type:        discordgo.ChatApplicationCommand,
+		Options: []*discordgo.ApplicationCommandOption{
+			{
+				Type:        discordgo.ApplicationCommandOptionString,
+				Name:        "date",
+				Description: "Session from Party Hunt Analyzer",
+				Required:    true,
+			},
+		},
+	}, {
+		Name:        "split-it",
+		Description: "Splits all sessions",
+		Type:        discordgo.ChatApplicationCommand,
+		Options: []*discordgo.ApplicationCommandOption{
+			{
+				Type:        discordgo.ApplicationCommandOptionString,
+				Name:        "session",
+				Description: "Session from Party Hunt Analyzer",
+				Required:    true,
+			},
+		},
 	},
 }

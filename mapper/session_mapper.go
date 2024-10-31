@@ -13,7 +13,10 @@ func MapPlainStringToSession(sessionRaw string) model.Session {
 	var session model.Session
 
 	reSession := regexp.MustCompile(`Session data: From ([^,]+), ([^ ]+) to ([^,]+), ([^ ]+) Session: ([^ ]+) Loot Type: ([^ ]+) Loot: ([\d,]+) Supplies: ([\d,]+) Balance: (-?[\d,]+)`)
-	rePlayer := regexp.MustCompile(`(\w+ \w+(?: \(Leader\))?) Loot: ([\d,]+) Supplies: ([\d,]+) Balance: (-?[\d,]+) Damage: ([\d,]+) Healing: ([\d,]+)`)
+	rePlayer := regexp.MustCompile(`([A-z ]+?)( \(Leader\))? Loot: ([\d,]+) Supplies: ([-\d,]+) Balance: ([-\d,]+) Damage: ([-\d,]+) Healing: ([\d,]+)`)
+
+	sessionRaw = strings.ReplaceAll(sessionRaw, "\n", " ")
+	sessionRaw = strings.ReplaceAll(sessionRaw, "    ", "")
 
 	sessionMatch := reSession.FindStringSubmatch(sessionRaw)
 	if len(sessionMatch) < 8 {
@@ -30,23 +33,18 @@ func MapPlainStringToSession(sessionRaw string) model.Session {
 	session.Balance = toInt(sessionMatch[9])
 
 	playerMatches := rePlayer.FindAllStringSubmatch(sessionRaw, -1)
-	for _, match := range playerMatches {
-		if len(match) < 7 {
-			continue
-		}
 
+	for _, match := range playerMatches {
 		player := model.Player{
-			Name:     removeLeaderSuffix(match[1]),
-			Loot:     toInt(match[2]),
-			Supplies: toInt(match[3]),
-			Balance:  toInt(match[4]),
-			Damage:   toInt(match[5]),
-			Healing:  toInt(match[6]),
+			Name:     trimSpaceLeft(match[1]),
+			Loot:     toInt(match[3]),
+			Supplies: toInt(match[4]),
+			Balance:  toInt(match[5]),
+			Damage:   toInt(match[6]),
+			Healing:  toInt(match[7]),
 		}
 		session.Players = append(session.Players, player)
 	}
-
-	fmt.Println(session)
 
 	return session
 }
@@ -62,9 +60,9 @@ func toInt(s string) int {
 	return int(value)
 }
 
-func removeLeaderSuffix(s string) string {
+func trimSpaceLeft(s string) string {
 
-	value := strings.ReplaceAll(s, " (Leader)", "")
+	value := strings.TrimLeft(s, " ")
 
 	return value
 }
